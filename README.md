@@ -12,8 +12,9 @@ Overview: A mini open source chess program for educational purposes (the latest 
 
 **Related resources**
 
-Harmonia Philosophica Huo Chess site: https://harmoniaphilosophica.com/2019/02/13/huo-chess-c-micro-chess-updated/
-Codeproject related article: https://www.codeproject.com/Articles/20736/C-C-CLI-Micro-Chess-Huo-Chess'
+- Harmonia Philosophica MAIN Huo Chess site: https://harmoniaphilosophica.com/2019/02/13/huo-chess-c-micro-chess-updated/
+- Codeproject related article: https://www.codeproject.com/Articles/20736/C-C-CLI-Micro-Chess-Huo-Chess
+
 Huo Chess tutorials can be found in Harmonia Philosophica site and in Codeproject. Reuse of the code is free, as long as the source is cited properly.
 Huo Chess Delta Version Description: Huo Chess micro chess engine in Visual Studio 2022, utlizing C# .NET 6.0.
 
