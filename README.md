@@ -1,6 +1,11 @@
 # Huo-Chess-QB64
 This is the Huo Chess edition in Quick Basic (QB64).
 
+Includes three programs:
+- HUOC: The Huo Chess edition without a GUI.
+- HUOC_GRAPHICS: The Huo Chess edition with graphics to present the chessboard.
+- HUOC_OPENING: The Huo Chess opening editor.
+
 Huo Chess: The best open-source micro chess program to use for educational purposes!
 
 Overview: A mini open source chess program for educational purposes (the latest console version is only 159 KB is size, even though it utilizes the latest .NET Platform). Code is purposefully heavily commented and kept as concise as possible; no size-reducing optimizations are applied that would make the code less readable. Articles explaining the chess engine algorithm exist either here or in Harmonia Philosophica site.
