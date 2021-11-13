@@ -1,11 +1,14 @@
 # Huo-Chess-QB64
-Huo Chess edition in Quick Basic (QB64)
+This is the Huo Chess edition in Quick Basic (QB64).
 
 Huo Chess: The best open-source micro chess program to use for educational purposes!
 
 Overview: A mini open source chess program for educational purposes (the latest console version is only 159 KB is size, even though it utilizes the latest .NET Platform). Code is purposefully heavily commented and kept as concise as possible; no size-reducing optimizations are applied that would make the code less readable. Articles explaining the chess engine algorithm exist either here or in Harmonia Philosophica site.
 
-Please go to https://github.com/skakos/huo-chess for the oldest .NET Framework edition.
+Huo Chess editions in GitHib
+- Huo Chess .NET Framework edition: https://github.com/skakos/huo-chess.
+- Huo Chess DV (Delta Version) based on C# and .NET Platform 6.0: https://github.com/skakos/HuoChessDV.
+- Huo Chess edition in Quick Basic (QB64): https://github.com/skakos/Huo-Chess-QB64
 
 Related resources
 
