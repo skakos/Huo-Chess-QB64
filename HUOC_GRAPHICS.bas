@@ -88,16 +88,16 @@ COMMON SHARED NodeLevel_2_count AS LONG
 COMMON SHARED NodeLevel_3_count AS LONG
 COMMON SHARED NodeLevel_4_count AS LONG
 COMMON SHARED parentNodeAnalyzed AS LONG
-DIM SHARED NodesMoves0$(1000000)
-DIM SHARED NodesMoves1$(1000000)
-DIM SHARED NodesMoves2$(1000000)
-DIM SHARED NodesMoves3$(1000000)
-DIM SHARED NodesMoves4$(1000000)
-DIM SHARED bestNodes0(10000000)
-DIM SHARED bestNodes1(10000000)
-DIM SHARED bestNodes2(10000000)
-DIM SHARED bestNodes3(10000000)
-DIM SHARED bestNodes4(10000000)
+'DIM SHARED NodesMoves0$(1000000)
+'DIM SHARED NodesMoves1$(1000000)
+'DIM SHARED NodesMoves2$(1000000)
+'DIM SHARED NodesMoves3$(1000000)
+'DIM SHARED NodesMoves4$(1000000)
+'DIM SHARED bestNodes0(10000000)
+'DIM SHARED bestNodes1(10000000)
+'DIM SHARED bestNodes2(10000000)
+'DIM SHARED bestNodes3(10000000)
+'DIM SHARED bestNodes4(10000000)
 COMMON SHARED bestNode2, bestNode1, bestNode0
 COMMON SHARED counter0 AS LONG
 COMMON SHARED counter1 AS LONG
@@ -119,7 +119,7 @@ COMMON SHARED Move
 'Set debugMode = 1 if you want debugging messages to appear, else set to 0
 debugMode = 0
 
-PRINT "Huo Chess - HUOC v0.6 by Spiros Kakos (2020, 2021)"
+PRINT "Huo Chess - HUOC v0.6 by Spiros Kakos (2020, 2021, 2022)"
 PRINT ""
 PRINT "The best open source chess in BASIC for educational purposes"
 PRINT "Check HUO CHESS in C# at Harmonia Philosophica as well!"
@@ -726,7 +726,7 @@ SUB computerMove
                             ' Store parents
                             NodesAnalysis0(NodeLevel_0_count, 2) = 0
                             'Store the move
-                            NodesMoves0$(NodeLevel_0_count) = STR$(startingColumn) + STR$(startingRank) + " -> " + STR$(finishingColumn) + STR$(finishingRank)
+                            'NodesMoves0$(NodeLevel_0_count) = STR$(startingColumn) + STR$(startingRank) + " -> " + STR$(finishingColumn) + STR$(finishingRank)
 
                             IF Move = thinkingDepth THEN
                                 'If the score is better than the existing best score, then this is the best move now (and the best score)
@@ -1823,6 +1823,8 @@ END SUB
 
 SUB HumanMove1 (HM1Skakiera() AS STRING)
 
+    HumanMoveFound = 0
+
     'Scan the chessboard...
     FOR I = 1 TO 8
         FOR J = 1 TO 8
@@ -1896,6 +1898,8 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
                         'If move is legal, then do the move and present it in the chessbooard
                         IF Nomimotita = 1 THEN
 
+                            HumanMoveFound = 1
+
                             'Do the move
                             HM1Skakiera$(finishingColumnHM1, finishingRankHM1) = HM1Skakiera$(startingColumnHM1, startingRankHM1)
                             HM1Skakiera$(startingColumnHM1, startingRankHM1) = ""
@@ -1916,7 +1920,7 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
                             ' Store parents
                             NodesAnalysis1(NodeLevel_1_count, 2) = NodeLevel_0_count
                             'Store the move
-                            NodesMoves1$(NodeLevel_1_count) = NodesMoves0$(NodeLevel_0_count) + " , " + STR$(startingColumnHM1) + STR$(startingRankHM1) + " -> " + STR$(finishingColumnHM1) + STR$(finishingRankHM1)
+                            'NodesMoves1$(NodeLevel_1_count) = NodesMoves0$(NodeLevel_0_count) + " , " + STR$(startingColumnHM1) + STR$(startingRankHM1) + " -> " + STR$(finishingColumnHM1) + STR$(finishingRankHM1)
 
                             IF Move < thinkingDepth THEN
                                 Move = Move + 1
@@ -2050,7 +2054,7 @@ SUB ComputerMove2 (CM2Skakiera() AS STRING)
                             ' Store parents
                             NodesAnalysis2(NodeLevel_2_count, 2) = NodeLevel_1_count
                             'Store the move
-                            NodesMoves1$(NodeLevel_2_count) = NodesMoves1$(NodeLevel_1_count) + " , " + STR$(startingColumnCM2) + STR$(startingRankCM2) + " -> " + STR$(finishingColumnCM2) + STR$(finishingRankCM2)
+                            'NodesMoves1$(NodeLevel_2_count) = NodesMoves1$(NodeLevel_1_count) + " , " + STR$(startingColumnCM2) + STR$(startingRankCM2) + " -> " + STR$(finishingColumnCM2) + STR$(finishingRankCM2)
 
                             IF debugMode = 1 THEN
                                 IF NodeLevel_2_count < 0 THEN PRINT "Now 4": INPUT CheckpointA$
@@ -2157,7 +2161,7 @@ SUB MinMax ()
         'WRITE #1, "startingRank    : ", NodesAnalysis0(counter0, 5)
         'WRITE #1, "finishingColumn : ", NodesAnalysis0(counter0, 4)
         'WRITE #1, "finishingRank   : ", NodesAnalysis0(counter0, 6)
-        WRITE #1, NodesMoves0$(counter0)
+        'WRITE #1, NodesMoves0$(counter0)
         WRITE #1, ""
     NEXT counter0
 
@@ -2166,7 +2170,7 @@ SUB MinMax ()
     FOR counter1 = 1 TO (NodeLevel_1_count - 1)
         WRITE #1, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
         WRITE #1, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
-        WRITE #1, NodesMoves1$(counter1)
+        'WRITE #1, NodesMoves1$(counter1)
         WRITE #1, ""
     NEXT counter1
 
@@ -2185,7 +2189,7 @@ SUB MinMax ()
 
         WRITE #1, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
         WRITE #1, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
-        WRITE #1, NodesMoves2$(counter2)
+        'WRITE #1, NodesMoves2$(counter2)
         WRITE #1, ""
     NEXT counter2
 
@@ -2194,7 +2198,7 @@ SUB MinMax ()
     FOR counter3 = 1 TO (NodeLevel_3_count - 1)
         WRITE #1, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
         WRITE #1, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
-        WRITE #1, NodesMoves3$(counter3)
+        'WRITE #1, NodesMoves3$(counter3)
         WRITE #1, ""
     NEXT counter3
 
@@ -2203,7 +2207,7 @@ SUB MinMax ()
     FOR counter4 = 1 TO (NodeLevel_4_count - 1)
         WRITE #1, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
         WRITE #1, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
-        WRITE #1, NodesMoves4$(counter4)
+        'WRITE #1, NodesMoves4$(counter4)
         WRITE #1, ""
     NEXT counter4
 
@@ -2230,7 +2234,7 @@ SUB MinMax ()
                 IF NodesAnalysis4(counter4, 2) = 0 THEN NodesAnalysis4(counter4, 2) = 1
                 NodesAnalysis3(NodesAnalysis4(counter4, 2), 1) = NodesAnalysis4(counter4, 1)
                 bestNode4 = counter4
-                bestNodes4(parentNodeAnalyzed) = counter4
+                'bestNodes4(parentNodeAnalyzed) = counter4
             END IF
 
             ' v0.991: Original: >=
@@ -2243,14 +2247,14 @@ SUB MinMax ()
                     IF NodesAnalysis4(counter4, 2) = 0 THEN NodesAnalysis4(counter4, 2) = 1
                     NodesAnalysis3(NodesAnalysis4(counter4, 2), 1) = NodesAnalysis4(counter4, 1)
                     bestNode4 = counter4
-                    bestNodes4(parentNodeAnalyzed) = counter4
+                    'bestNodes4(parentNodeAnalyzed) = counter4
                 END IF
             ELSEIF (playerColor$ = "b") THEN
                 IF (NodesAnalysis4(counter4, 1) >= NodesAnalysis3(NodesAnalysis4(counter4, 2), 1)) THEN
                     IF NodesAnalysis4(counter4, 2) = 0 THEN NodesAnalysis4(counter4, 2) = 1
                     NodesAnalysis3(NodesAnalysis4(counter4, 2), 1) = NodesAnalysis4(counter4, 1)
                     bestNode4 = counter4
-                    bestNodes4(parentNodeAnalyzed) = counter4
+                    'bestNodes4(parentNodeAnalyzed) = counter4
                 END IF
             END IF
 
@@ -2271,7 +2275,7 @@ SUB MinMax ()
                 IF NodesAnalysis3(counter3, 2) = 0 THEN NodesAnalysis3(counter3, 2) = 1
                 NodesAnalysis2(NodesAnalysis3(counter3, 2), 1) = NodesAnalysis3(counter3, 1)
                 bestNode3 = counter3
-                bestNodes3(parentNodeAnalyzed) = counter3
+                'bestNodes3(parentNodeAnalyzed) = counter3
             END IF
 
             ' v0.991: Choose different based on colour!
@@ -2280,14 +2284,14 @@ SUB MinMax ()
                     IF NodesAnalysis3(counter3, 2) = 0 THEN NodesAnalysis3(counter3, 2) = 1
                     NodesAnalysis2(NodesAnalysis3(counter3, 2), 1) = NodesAnalysis3(counter3, 1)
                     bestNode3 = counter3
-                    bestNodes3(parentNodeAnalyzed) = counter3
+                    'bestNodes3(parentNodeAnalyzed) = counter3
                 END IF
             ELSEIF (playerColor$ = "b") THEN
                 IF NodesAnalysis3(counter3, 1) <= NodesAnalysis2(NodesAnalysis3(counter3, 2), 1) THEN
                     IF NodesAnalysis3(counter3, 2) = 0 THEN NodesAnalysis3(counter3, 2) = 1
                     NodesAnalysis2(NodesAnalysis3(counter3, 2), 1) = NodesAnalysis3(counter3, 1)
                     bestNode3 = counter3
-                    bestNodes3(parentNodeAnalyzed) = counter3
+                    'bestNodes3(parentNodeAnalyzed) = counter3
                 END IF
             END IF
 
@@ -2317,7 +2321,7 @@ SUB MinMax ()
                 PRINT "parentNodeAnalyzed = " + STR$(parentNodeAnalyzed)
                 PRINT "parentNodeAnalyzed = " + STR$(parentNodeAnalyzed)
             END IF
-            bestNodes2(parentNodeAnalyzed) = counter2
+            'bestNodes2(parentNodeAnalyzed) = counter2
         END IF
 
         ' v0.991: Original: >=
@@ -2329,13 +2333,13 @@ SUB MinMax ()
             IF (NodesAnalysis2(counter2, 1) <= NodesAnalysis1(NodesAnalysis2(counter2, 2), 1)) THEN
                 NodesAnalysis1(NodesAnalysis2(counter2, 2), 1) = NodesAnalysis2(counter2, 1)
                 bestNode2 = counter2
-                bestNodes2(parentNodeAnalyzed) = counter2
+                'bestNodes2(parentNodeAnalyzed) = counter2
             END IF
         ELSEIF (playerColor$ = "b") THEN
             IF (NodesAnalysis2(counter2, 1) >= NodesAnalysis1(NodesAnalysis2(counter2, 2), 1)) THEN
                 NodesAnalysis1(NodesAnalysis2(counter2, 2), 1) = NodesAnalysis2(counter2, 1)
                 bestNode2 = counter2
-                bestNodes2(parentNodeAnalyzed) = counter2
+                'bestNodes2(parentNodeAnalyzed) = counter2
             END IF
         END IF
 
@@ -2355,7 +2359,7 @@ SUB MinMax ()
             parentNodeAnalyzed = NodesAnalysis1(counter1, 2)
             NodesAnalysis0(NodesAnalysis1(counter1, 2), 1) = NodesAnalysis1(counter1, 1)
             bestNode1 = counter1
-            bestNodes1(parentNodeAnalyzed) = counter1
+            'bestNodes1(parentNodeAnalyzed) = counter1
         END IF
 
         ' v0.991: Choose different based on colour!
@@ -2363,13 +2367,13 @@ SUB MinMax ()
             IF NodesAnalysis1(counter1, 1) >= NodesAnalysis0(NodesAnalysis1(counter1, 2), 1) THEN
                 NodesAnalysis0(NodesAnalysis1(counter1, 2), 1) = NodesAnalysis1(counter1, 1)
                 bestNode1 = counter1
-                bestNodes1(parentNodeAnalyzed) = counter1
+                'bestNodes1(parentNodeAnalyzed) = counter1
             END IF
         ELSEIF (playerColor$ = "b") THEN
             IF NodesAnalysis1(counter1, 1) <= NodesAnalysis0(NodesAnalysis1(counter1, 2), 1) THEN
                 NodesAnalysis0(NodesAnalysis1(counter1, 2), 1) = NodesAnalysis1(counter1, 1)
                 bestNode1 = counter1
-                bestNodes1(parentNodeAnalyzed) = counter1
+                'bestNodes1(parentNodeAnalyzed) = counter1
             END IF
         END IF
 
@@ -2435,7 +2439,7 @@ SUB MinMax ()
         'WRITE #2, "startingRank    : ", NodesAnalysis0(counter0, 5)
         'WRITE #2, "finishingColumn : ", NodesAnalysis0(counter0, 4)
         'WRITE #2, "finishingRank   : ", NodesAnalysis0(counter0, 6)
-        WRITE #2, NodesMoves0$(counter0)
+        'WRITE #2, NodesMoves0$(counter0)
         WRITE #2, ""
     NEXT counter0
 
@@ -2444,7 +2448,7 @@ SUB MinMax ()
     FOR counter1 = 1 TO (NodeLevel_1_count - 1)
         WRITE #2, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
         WRITE #2, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
-        WRITE #2, NodesMoves1$(counter1)
+        'WRITE #2, NodesMoves1$(counter1)
         WRITE #2, ""
     NEXT counter1
 
@@ -2453,7 +2457,7 @@ SUB MinMax ()
     FOR counter2 = 1 TO (NodeLevel_2_count - 1)
         WRITE #2, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
         WRITE #2, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
-        WRITE #2, NodesMoves2$(counter2)
+        'WRITE #2, NodesMoves2$(counter2)
         WRITE #2, ""
     NEXT counter2
 
@@ -2462,7 +2466,7 @@ SUB MinMax ()
     FOR counter3 = 1 TO (NodeLevel_3_count - 1)
         WRITE #1, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
         WRITE #1, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
-        WRITE #1, NodesMoves3$(counter3)
+        'WRITE #1, NodesMoves3$(counter3)
         WRITE #1, ""
     NEXT counter3
 
@@ -2471,7 +2475,7 @@ SUB MinMax ()
     FOR counter4 = 1 TO (NodeLevel_4_count - 1)
         WRITE #1, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
         WRITE #1, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
-        WRITE #1, NodesMoves4$(counter4)
+        'WRITE #1, NodesMoves4$(counter4)
         WRITE #1, ""
     NEXT counter4
 
