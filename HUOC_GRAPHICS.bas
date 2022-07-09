@@ -712,7 +712,7 @@ SUB computerMove
                             chessboard$(startingColumn, startingRank) = ""
 
                             'Count the score of the move
-                            CALL countScore
+                            CALL countScore(chessboard$())
 
                             IF debugMode = 1 THEN
                                 PRINT ""
@@ -1510,11 +1510,11 @@ SUB ElegxosNomimotitas (ENSkakiera() AS STRING, checkForDanger AS INTEGER, start
 
 END SUB
 
-SUB countScore
+SUB countScore(CSSkakiera() AS STRING)
 
     'v0.5: Multipled all scores by 10-factor (e.g. score of a bishop is now 30 instead of 3), so that I can include additional checks for the position score.
-    '      Without doing that I could not add the quality checks I added, e.g. the IF chessboard$(4, 4) = "wpawn" THEN positionScore = positionScore + 0.1.
-    '      Now the additional score checks can be added with integers, e.g. IF chessboard$(4, 4) = "wpawn" THEN positionScore = positionScore + 1 for the above example.
+    '      Without doing that I could not add the quality checks I added, e.g. the IF CSSkakiera$(4, 4) = "wpawn" THEN positionScore = positionScore + 0.1.
+    '      Now the additional score checks can be added with integers, e.g. IF CSSkakiera$(4, 4) = "wpawn" THEN positionScore = positionScore + 1 for the above example.
     '      If I wanted to do what using decimals, then all positionScore, bestPositionScore, NodesAnalysis0... NodesAnalysis4 variables and arrays should de defined as DOUBLE, but then we would have memory problems...
 
     positionScore = 0
@@ -1525,11 +1525,11 @@ SUB countScore
     'Locate the position of the kings...
     FOR I = 1 TO 8
         FOR J = 1 TO 8
-            IF chessboard$(I, J) = "wking" THEN
+            IF CSSkakiera$(I, J) = "wking" THEN
                 wkingPositionI = I
                 wkingPositionJ = J
             END IF
-            IF chessboard$(I, J) = "bking" THEN
+            IF CSSkakiera$(I, J) = "bking" THEN
                 bkingPositionI = I
                 bkingPositionJ = J
             END IF
@@ -1539,21 +1539,21 @@ SUB countScore
     FOR I = 1 TO 8
         FOR J = 1 TO 8
 
-            'IF chessboard$(I, J) = "wpawn" THEN positionScore = positionScore + 1
-            'IF chessboard$(I, J) = "wrook" THEN positionScore = positionScore + 5
-            'IF chessboard$(I, J) = "wknight" THEN positionScore = positionScore + 3
-            'IF chessboard$(I, J) = "wbishop" THEN positionScore = positionScore + 3
-            'IF chessboard$(I, J) = "wqueen" THEN positionScore = positionScore + 9
-            'IF chessboard$(I, J) = "wking" THEN positionScore = positionScore + 100
+            'IF CSSkakiera$(I, J) = "wpawn" THEN positionScore = positionScore + 1
+            'IF CSSkakiera$(I, J) = "wrook" THEN positionScore = positionScore + 5
+            'IF CSSkakiera$(I, J) = "wknight" THEN positionScore = positionScore + 3
+            'IF CSSkakiera$(I, J) = "wbishop" THEN positionScore = positionScore + 3
+            'IF CSSkakiera$(I, J) = "wqueen" THEN positionScore = positionScore + 9
+            'IF CSSkakiera$(I, J) = "wking" THEN positionScore = positionScore + 100
 
-            'IF chessboard$(I, J) = "bpawn" THEN positionScore = positionScore - 1
-            'IF chessboard$(I, J) = "brook" THEN positionScore = positionScore - 5
-            'IF chessboard$(I, J) = "bknight" THEN positionScore = positionScore - 3
-            'IF chessboard$(I, J) = "bbishop" THEN positionScore = positionScore - 3
-            'IF chessboard$(I, J) = "bqueen" THEN positionScore = positionScore - 9
-            'IF chessboard$(I, J) = "bking" THEN positionScore = positionScore - 100
+            'IF CSSkakiera$(I, J) = "bpawn" THEN positionScore = positionScore - 1
+            'IF CSSkakiera$(I, J) = "brook" THEN positionScore = positionScore - 5
+            'IF CSSkakiera$(I, J) = "bknight" THEN positionScore = positionScore - 3
+            'IF CSSkakiera$(I, J) = "bbishop" THEN positionScore = positionScore - 3
+            'IF CSSkakiera$(I, J) = "bqueen" THEN positionScore = positionScore - 9
+            'IF CSSkakiera$(I, J) = "bking" THEN positionScore = positionScore - 100
 
-            IF chessboard$(I, J) = "wpawn" THEN
+            IF CSSkakiera$(I, J) = "wpawn" THEN
                 positionScore = positionScore + 10
                 'At the end, passed pawns are a good thing...
                 IF (Move > 30) AND (J > 4) THEN
@@ -1567,9 +1567,9 @@ SUB countScore
                 END IF
             END IF
 
-            IF chessboard$(I, J) = "wrook" THEN positionScore = positionScore + 50
+            IF CSSkakiera$(I, J) = "wrook" THEN positionScore = positionScore + 50
 
-            IF chessboard$(I, J) = "wknight" THEN
+            IF CSSkakiera$(I, J) = "wknight" THEN
                 positionScore = positionScore + 30
                 'At the end of the game, go close to the kings...
                 IF Move > 30 AND (ABS(I - bkingPositionI) < 5 OR ABS(J - bkingPositionJ) < 5) THEN
@@ -1577,13 +1577,13 @@ SUB countScore
                 END IF
             END IF
 
-            IF chessboard$(I, J) = "wbishop" THEN positionScore = positionScore + 30
+            IF CSSkakiera$(I, J) = "wbishop" THEN positionScore = positionScore + 30
 
-            IF chessboard$(I, J) = "wqueen" THEN positionScore = positionScore + 90
+            IF CSSkakiera$(I, J) = "wqueen" THEN positionScore = positionScore + 90
 
-            IF chessboard$(I, J) = "wking" THEN positionScore = positionScore + 150
+            IF CSSkakiera$(I, J) = "wking" THEN positionScore = positionScore + 150
 
-            IF chessboard$(I, J) = "bpawn" THEN
+            IF CSSkakiera$(I, J) = "bpawn" THEN
                 positionScore = positionScore - 10
                 'At the end, passed pawns are a good thing...
                 IF (Move > 30) AND (J < 5) THEN
@@ -1597,9 +1597,9 @@ SUB countScore
                 END IF
             END IF
 
-            IF chessboard$(I, J) = "brook" THEN positionScore = positionScore - 50
+            IF CSSkakiera$(I, J) = "brook" THEN positionScore = positionScore - 50
 
-            IF chessboard$(I, J) = "bknight" THEN
+            IF CSSkakiera$(I, J) = "bknight" THEN
                 positionScore = positionScore - 30
                 'At the end of the game, go close to the kings...
                 IF Move > 30 AND (ABS(I - wkingPositionI) < 5 OR ABS(J - wkingPositionJ) < 5) THEN
@@ -1607,58 +1607,58 @@ SUB countScore
                 END IF
             END IF
 
-            IF chessboard$(I, J) = "bbishop" THEN positionScore = positionScore - 30
+            IF CSSkakiera$(I, J) = "bbishop" THEN positionScore = positionScore - 30
 
-            IF chessboard$(I, J) = "bqueen" THEN positionScore = positionScore - 90
+            IF CSSkakiera$(I, J) = "bqueen" THEN positionScore = positionScore - 90
 
-            IF chessboard$(I, J) = "bking" THEN positionScore = positionScore - 150
+            IF CSSkakiera$(I, J) = "bking" THEN positionScore = positionScore - 150
 
         NEXT J
     NEXT I
 
     'Check position quality
     'Take the center
-    IF chessboard$(4, 3) = "wpawn" THEN positionScore = positionScore + 1
-    IF chessboard$(4, 4) = "wpawn" THEN positionScore = positionScore + 1
-    IF chessboard$(5, 3) = "wpawn" THEN positionScore = positionScore + 1
-    IF chessboard$(5, 4) = "wpawn" THEN positionScore = positionScore + 1
-    IF chessboard$(4, 5) = "bpawn" THEN positionScore = positionScore - 1
-    IF chessboard$(4, 6) = "bpawn" THEN positionScore = positionScore - 1
-    IF chessboard$(5, 5) = "bpawn" THEN positionScore = positionScore - 1
-    IF chessboard$(5, 6) = "bpawn" THEN positionScore = positionScore - 1
+    IF CSSkakiera$(4, 3) = "wpawn" THEN positionScore = positionScore + 1
+    IF CSSkakiera$(4, 4) = "wpawn" THEN positionScore = positionScore + 1
+    IF CSSkakiera$(5, 3) = "wpawn" THEN positionScore = positionScore + 1
+    IF CSSkakiera$(5, 4) = "wpawn" THEN positionScore = positionScore + 1
+    IF CSSkakiera$(4, 5) = "bpawn" THEN positionScore = positionScore - 1
+    IF CSSkakiera$(4, 6) = "bpawn" THEN positionScore = positionScore - 1
+    IF CSSkakiera$(5, 5) = "bpawn" THEN positionScore = positionScore - 1
+    IF CSSkakiera$(5, 6) = "bpawn" THEN positionScore = positionScore - 1
 
     'In the opening, avoid stupid moves
     'White
     IF MoveNumber < 10 THEN
         'Do not move the rook
-        IF chessboard$(1, 1) = "" THEN positionScore = positionScore - 1
-        IF chessboard$(8, 1) = "" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(1, 1) = "" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(8, 1) = "" THEN positionScore = positionScore - 1
         'Do not move the knights at the edges
-        IF chessboard$(1, 3) = "wknight" THEN positionScore = positionScore - 1
-        IF chessboard$(8, 3) = "wknight" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(1, 3) = "wknight" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(8, 3) = "wknight" THEN positionScore = positionScore - 1
         'Do not move the queen
-        IF chessboard$(4, 1) = "" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(4, 1) = "" THEN positionScore = positionScore - 1
         'Do not move the king
-        IF chessboard$(5, 1) = "" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(5, 1) = "" THEN positionScore = positionScore - 1
         'Don't do stupid moves with pawns
-        IF chessboard$(1, 4) = "wpawn" THEN positionScore = positionScore - 1
-        IF chessboard$(8, 4) = "wpawn" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(1, 4) = "wpawn" THEN positionScore = positionScore - 1
+        IF CSSkakiera$(8, 4) = "wpawn" THEN positionScore = positionScore - 1
     END IF
     'Black
     IF MoveNumber < 10 THEN
         'Do not move the rook
-        IF chessboard$(1, 8) = "" THEN positionScore = positionScore + 1
-        IF chessboard$(8, 8) = "" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(1, 8) = "" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(8, 8) = "" THEN positionScore = positionScore + 1
         'Do not move the knights at the edges
-        IF chessboard$(1, 6) = "bknight" THEN positionScore = positionScore + 1
-        IF chessboard$(8, 6) = "bknight" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(1, 6) = "bknight" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(8, 6) = "bknight" THEN positionScore = positionScore + 1
         'Do not move the queen
-        IF chessboard$(4, 8) = "" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(4, 8) = "" THEN positionScore = positionScore + 1
         'Do not move the king
-        IF chessboard$(5, 8) = "" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(5, 8) = "" THEN positionScore = positionScore + 1
         'Don't do stupid moves with pawns
-        IF chessboard$(1, 5) = "bpawn" THEN positionScore = positionScore + 1
-        IF chessboard$(8, 5) = "bpawn" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(1, 5) = "bpawn" THEN positionScore = positionScore + 1
+        IF CSSkakiera$(8, 5) = "bpawn" THEN positionScore = positionScore + 1
     END IF
 
     IF (debugMode = 1) THEN PRINT "Position Score = " + STR$(positionScore)
@@ -1905,7 +1905,7 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
                             HM1Skakiera$(startingColumnHM1, startingRankHM1) = ""
 
                             'Count the score of the move
-                            CALL countScore
+                            CALL countScore(HM1Skakiera$())
 
                             IF debugMode = 1 THEN
                                 PRINT ""
@@ -2038,7 +2038,7 @@ SUB ComputerMove2 (CM2Skakiera() AS STRING)
                             CM2Skakiera$(startingColumnCM2, startingRankCM2) = ""
 
                             'Count the score of the move
-                            CALL countScore
+                            CALL countScore(CM2Skakiera$())
 
                             IF debugMode = 1 THEN
                                 PRINT ""
@@ -2530,7 +2530,7 @@ SUB HumanMove3 (HM3Skakiera() AS STRING)
                             HM3Skakiera$(startingColumnHM3, startingRankHM3) = ""
 
                             'Count the score of the move
-                            CALL countScore
+                            CALL countScore(HM3Skakiera$())
 
                             'PRINT "NodeLevel_3_count = " + STR$(NodeLevel_3_count)
 
@@ -2611,7 +2611,7 @@ SUB ComputerMove4 (CM4Skakiera() AS STRING)
                             CM4Skakiera$(startingColumnCM4, startingRankCM4) = ""
 
                             'Count the score of the move
-                            CALL countScore
+                            CALL countScore(CM4Skakiera$())
 
                             '-------------- MinMax --------------
                             'Store scores
