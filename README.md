@@ -8,7 +8,7 @@ Includes three programs:
 
 Huo Chess: The best open-source micro chess program to use for educational purposes!
 
-Overview: A mini open source chess program for educational purposes (the latest console version is only 159 KB is size, even though it utilizes the latest .NET Platform). Code is purposefully heavily commented and kept as concise as possible; no size-reducing optimizations are applied that would make the code less readable. Articles explaining the chess engine algorithm exist either here or in Harmonia Philosophica site.
+Overview: A mini open source chess program for educational purposes (the latest Java version is 48 KB in size, while the latest C# console version is only 159 KB is size, even though it utilizes the latest .NET Platform). Code is purposefully heavily commented and kept as concise as possible; no size-reducing optimizations are applied that would make the code less readable. Articles explaining the chess engine algorithm exist either here or in Harmonia Philosophica site.
 
 **Huo Chess editions in GitHib**
 - Huo Chess .NET Framework edition: https://github.com/skakos/huo-chess.
