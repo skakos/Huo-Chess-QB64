@@ -104,7 +104,7 @@ COMMON SHARED CalledFromCheckCheck '14/3/2021
 'Set debugMode = 1 if you want debugging messages to appear, else set to 0
 debugMode = 0
 
-PRINT "Huo Chess - HUOC v0.6 by Spiros Kakos (2020, 2021)"
+PRINT "Huo Chess - HUOC v0.9 by Spiros Kakos (2020, 2021, 2022)"
 PRINT ""
 PRINT "The best open source chess in BASIC for educational purposes"
 PRINT "Check HUO CHESS in C# at Harmonia Philosophica as well!"
@@ -124,9 +124,13 @@ IF thinkingDepth <> 1 AND thinkingDepth <> 3 AND thinkingDepth <> 5 THEN GOTO Se
 
 PRINT ""
 computerLogs:
-INPUT "Activate debug messages for computer?  (y/n) ", computerLogs$: IF computerLogs$ <> "y" AND computerLogs$ <> "n" THEN GOTO computerLogs
+'INPUT "Activate debug messages for computer?  (y/n) ", computerLogs$: IF computerLogs$ <> "y" AND computerLogs$ <> "n" THEN GOTO computerLogs
 humanLogs:
-INPUT "Activate debug messages for the human? (y/n) ", humanLogs$: IF humanLogs$ <> "y" AND humanLogs$ <> "n" THEN GOTO humanLogs
+'INPUT "Activate debug messages for the human? (y/n) ", humanLogs$: IF humanLogs$ <> "y" AND humanLogs$ <> "n" THEN GOTO humanLogs
+
+'Turn off debug messages (set to "y" to turn on)
+computerLogs$ = "n"
+humanLogs$ = "n"
 
 CLS
 
@@ -287,21 +291,21 @@ SUB PlayerMove
 
     'Check the check
     IF playerColor$ = "b" AND Nomimotita = 1 THEN
-        whoPlays$ = "HY"
+        'whoPlays$ = "HY"
         CALL checkBlackCheck(chessboard$())
         'Restore Nomimotita! (because it is 'broken' in the checkCheck function
         Nomimotita = 1
         IF blackCheck = 1 THEN Nomimotita = 0
-        whoPlays$ = "Human"
+        'whoPlays$ = "Human"
     END IF
 
     IF playerColor$ = "w" AND Nomimotita = 1 THEN
-        whoPlays$ = "HY"
+        'whoPlays$ = "HY"
         CALL checkWhiteCheck(chessboard$())
         'Restore Nomimotita! (because it is 'broken' in the checkCheck function
         Nomimotita = 1
         IF whiteCheck = 1 THEN Nomimotita = 0
-        whoPlays$ = "Human"
+        'whoPlays$ = "Human"
     END IF
 
     'Undo the move
@@ -327,10 +331,11 @@ SUB PlayerMove
         chessboard$(startingColumn, startingRank) = ""
 
         'Castling
-        IF playerColor$ = "w" AND whiteBigCastling = 1 THEN chessboard$(4, 1) = "wrook": chessboard$(1, 1) = ""
-        IF playerColor$ = "w" AND whiteSmallCastling = 1 THEN chessboard$(6, 1) = "wrook": chessboard$(8, 1) = ""
-        IF playerColor$ = "b" AND blackBigCastling = 1 THEN chessboard$(4, 8) = "brook": chessboard$(1, 8) = ""
-        IF playerColor$ = "b" AND blackSmallCastling = 1 THEN chessboard$(6, 8) = "brook": chessboard$(8, 8) = ""
+		'After castling set variable value to 2 so that it does not place the rook on f8/f1 - c8/c1 again...
+        IF playerColor$ = "w" AND whiteBigCastling = 1 THEN chessboard$(4, 1) = "wrook": chessboard$(1, 1) = "": whiteBigCastling = 2
+        IF playerColor$ = "w" AND whiteSmallCastling = 1 THEN chessboard$(6, 1) = "wrook": chessboard$(8, 1) = "": whiteSmallCastling = 2
+        IF playerColor$ = "b" AND blackBigCastling = 1 THEN chessboard$(4, 8) = "brook": chessboard$(1, 8) = "": blackBigCastling = 2
+        IF playerColor$ = "b" AND blackSmallCastling = 1 THEN chessboard$(6, 8) = "brook": chessboard$(8, 8) = "": blackSmallCastling = 2
 
         'Check for pawn promotion
         CALL PawnPromotion
@@ -509,22 +514,22 @@ SUB computerMove
 
                         'Check the check
                         IF playerColor$ = "b" AND Nomimotita = 1 THEN
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                             CALL checkWhiteCheck(chessboard$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function
                             Nomimotita = 1
                             IF whiteCheck = 1 THEN Nomimotita = 0
                             'IF Trela = 1 THEN PRINT "Check B: whiteCheck = " + STR$(whiteCheck) + " , Nomimotita = " + STR$(Nomimotita): INPUT A$
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                         END IF
 
                         IF playerColor$ = "w" AND Nomimotita = 1 THEN
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                             CALL checkBlackCheck(chessboard$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function
                             Nomimotita = 1
                             IF blackCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                         END IF
 
                         'Undo the move
@@ -1674,21 +1679,21 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
 
                         'Check the check
                         IF playerColor$ = "b" AND Nomimotita = 1 THEN
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                             CALL checkBlackCheck(HM1Skakiera$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function)
                             Nomimotita = 1
                             IF blackCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                         END IF
 
                         IF playerColor$ = "w" AND Nomimotita = 1 THEN
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                             CALL checkWhiteCheck(HM1Skakiera$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function)
                             Nomimotita = 1
                             IF whiteCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                         END IF
 
                         'Undo the move
@@ -1764,17 +1769,9 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
         'Detect stalemate (Pat in Greek) if there is no human move found, but there is check! (14/3/2021)
         IF playerColor$ = "w" AND whiteCheck = 0 THEN
             PatFound = 1
-            bestStartingRankMate = startingRank
-            bestStartingColumnMate = startingColumn
-            bestFinishingRankMate = finishingRank
-            bestFinishingColumnMate = finishingColumn
         END IF
         IF playerColor$ = "b" AND blackCheck = 0 THEN
             PatFound = 1
-            bestStartingRankMate = startingRank
-            bestStartingColumnMate = startingColumn
-            bestFinishingRankMate = finishingRank
-            bestFinishingColumnMate = finishingColumn
         END IF
 
     END IF
@@ -1924,9 +1921,11 @@ SUB MinMax ()
 
     ' ------- LOG: Nodes before (end) -------
 
+    parentNodeAnalyzed = -999
+
     IF thinkingDepth = 5 THEN
 
-        parentNodeAnalyzed = -999
+        'parentNodeAnalyzed = -999
 
         ' Move 4 level (Computer) -- The analysis starts from here if Thinking_Depth = 4.
 
@@ -1976,7 +1975,7 @@ SUB MinMax ()
 
         ' Move 3 level (Human)
 
-        parentNodeAnalyzed = -999
+        'parentNodeAnalyzed = -999
 
         ' Note: Start from 1!
         FOR counter3 = 1 TO (NodeLevel_3_count - 1)
@@ -2010,7 +2009,7 @@ SUB MinMax ()
 
     END IF
 
-    parentNodeAnalyzed = -999
+    'parentNodeAnalyzed = -999
 
     ' Move 2 level (Computer) -- The analysis starts from here if Thinking_Depth = 2.
 
@@ -2061,7 +2060,7 @@ SUB MinMax ()
 
     ' Move 1 level (Human)
 
-    parentNodeAnalyzed = -999
+    'parentNodeAnalyzed = -999
 
     ' Note: Start from 1!
     FOR counter1 = 1 TO (NodeLevel_1_count - 1)

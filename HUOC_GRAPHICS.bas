@@ -106,12 +106,12 @@ COMMON SHARED counter3 AS LONG
 COMMON SHARED counter4 AS LONG
 COMMON SHARED CalledFromCheckCheck '14/3/2021
 COMMON SHARED huologs$, logLine$
-OPEN "Huo Chess Logs - Nodes before.txt" FOR OUTPUT AS #1
-OPEN "Huo Chess Logs - Nodes after.txt" FOR OUTPUT AS #2
-WRITE #1, "Huo Chess Logs - Nodes before"
-WRITE #1, ""
-WRITE #2, "Huo Chess Logs - Nodes after"
-WRITE #2, ""
+'OPEN "Huo Chess Logs - Nodes before.txt" FOR OUTPUT AS #1
+'OPEN "Huo Chess Logs - Nodes after.txt" FOR OUTPUT AS #2
+'WRITE #1, "Huo Chess Logs - Nodes before"
+'WRITE #1, ""
+'WRITE #2, "Huo Chess Logs - Nodes after"
+'WRITE #2, ""
 
 COMMON SHARED thinkingDepth
 COMMON SHARED Move
@@ -119,7 +119,7 @@ COMMON SHARED Move
 'Set debugMode = 1 if you want debugging messages to appear, else set to 0
 debugMode = 0
 
-PRINT "Huo Chess - HUOC v0.6 by Spiros Kakos (2020, 2021, 2022)"
+PRINT "Huo Chess - HUOC GRAPHICS v0.9 by Spiros Kakos (2020, 2021, 2022)"
 PRINT ""
 PRINT "The best open source chess in BASIC for educational purposes"
 PRINT "Check HUO CHESS in C# at Harmonia Philosophica as well!"
@@ -139,13 +139,14 @@ SetThinkingDepth:
 PRINT "": INPUT "Set thinking depth. Please select 1 or 3 or 5: ", thinkingDepth
 IF thinkingDepth <> 1 AND thinkingDepth <> 3 AND thinkingDepth <> 5 THEN GOTO SetThinkingDepth
 
-PRINT ""
-PRINT "IMPORTANT NOTE: Remember to delete text log files in the application folder!"
-PRINT ""
 computerLogs:
-INPUT "Activate debug messages for computer?  (y/n) ", computerLogs$: IF computerLogs$ <> "y" AND computerLogs$ <> "n" THEN GOTO computerLogs
+'INPUT "Activate debug messages for computer?  (y/n) ", computerLogs$: IF computerLogs$ <> "y" AND computerLogs$ <> "n" THEN GOTO computerLogs
 humanLogs:
-INPUT "Activate debug messages for the human? (y/n) ", humanLogs$: IF humanLogs$ <> "y" AND humanLogs$ <> "n" THEN GOTO humanLogs
+'INPUT "Activate debug messages for the human? (y/n) ", humanLogs$: IF humanLogs$ <> "y" AND humanLogs$ <> "n" THEN GOTO humanLogs
+
+'Turn off debug messages (set to "y" to turn on)
+computerLogs$ = "n"
+humanLogs$ = "n"
 
 CALL initialPosition
 
@@ -430,21 +431,21 @@ SUB PlayerMove
 
     'Check the check
     IF playerColor$ = "b" AND Nomimotita = 1 THEN
-        whoPlays$ = "HY"
+        'whoPlays$ = "HY"
         CALL checkBlackCheck(chessboard$())
         'Restore Nomimotita! (because it is 'broken' in the checkCheck function
         Nomimotita = 1
         IF blackCheck = 1 THEN Nomimotita = 0
-        whoPlays$ = "Human"
+        'whoPlays$ = "Human"
     END IF
 
     IF playerColor$ = "w" AND Nomimotita = 1 THEN
-        whoPlays$ = "HY"
+        'whoPlays$ = "HY"
         CALL checkWhiteCheck(chessboard$())
         'Restore Nomimotita! (because it is 'broken' in the checkCheck function
         Nomimotita = 1
         IF whiteCheck = 1 THEN Nomimotita = 0
-        whoPlays$ = "Human"
+        'whoPlays$ = "Human"
     END IF
 
     'Undo the move
@@ -470,10 +471,11 @@ SUB PlayerMove
         chessboard$(startingColumn, startingRank) = ""
 
         'Castling
-        IF playerColor$ = "w" AND whiteBigCastling = 1 THEN chessboard$(4, 1) = "wrook": chessboard$(1, 1) = ""
-        IF playerColor$ = "w" AND whiteSmallCastling = 1 THEN chessboard$(6, 1) = "wrook": chessboard$(8, 1) = ""
-        IF playerColor$ = "b" AND blackBigCastling = 1 THEN chessboard$(4, 8) = "brook": chessboard$(1, 8) = ""
-        IF playerColor$ = "b" AND blackSmallCastling = 1 THEN chessboard$(6, 8) = "brook": chessboard$(8, 8) = ""
+        'After castling set variable value to 2 so that it does not place the rook on f8/f1 - c8/c1 again...
+        IF playerColor$ = "w" AND whiteBigCastling = 1 THEN chessboard$(4, 1) = "wrook": chessboard$(1, 1) = "": whiteBigCastling = 2
+        IF playerColor$ = "w" AND whiteSmallCastling = 1 THEN chessboard$(6, 1) = "wrook": chessboard$(8, 1) = "": whiteSmallCastling = 2
+        IF playerColor$ = "b" AND blackBigCastling = 1 THEN chessboard$(4, 8) = "brook": chessboard$(1, 8) = "": blackBigCastling = 2
+        IF playerColor$ = "b" AND blackSmallCastling = 1 THEN chessboard$(6, 8) = "brook": chessboard$(8, 8) = "": blackSmallCastling = 2
 
         'Check for pawn promotion
         CALL PawnPromotion
@@ -644,21 +646,21 @@ SUB computerMove
 
                         'Check the check
                         IF playerColor$ = "b" AND Nomimotita = 1 THEN
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                             CALL checkWhiteCheck(chessboard$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function
                             Nomimotita = 1
                             IF whiteCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                         END IF
 
                         IF playerColor$ = "w" AND Nomimotita = 1 THEN
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                             CALL checkBlackCheck(chessboard$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function
                             Nomimotita = 1
                             IF blackCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                         END IF
 
                         'Undo the move
@@ -1510,7 +1512,7 @@ SUB ElegxosNomimotitas (ENSkakiera() AS STRING, checkForDanger AS INTEGER, start
 
 END SUB
 
-SUB countScore(CSSkakiera() AS STRING)
+SUB countScore (CSSkakiera() AS STRING)
 
     'v0.5: Multipled all scores by 10-factor (e.g. score of a bishop is now 30 instead of 3), so that I can include additional checks for the position score.
     '      Without doing that I could not add the quality checks I added, e.g. the IF CSSkakiera$(4, 4) = "wpawn" THEN positionScore = positionScore + 0.1.
@@ -1859,21 +1861,21 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
 
                         'Check the check
                         IF playerColor$ = "b" AND Nomimotita = 1 THEN
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                             CALL checkBlackCheck(HM1Skakiera$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function)
                             Nomimotita = 1
                             IF blackCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                         END IF
 
                         IF playerColor$ = "w" AND Nomimotita = 1 THEN
-                            whoPlays$ = "HY"
+                            'whoPlays$ = "HY"
                             CALL checkWhiteCheck(HM1Skakiera$())
                             'Restore Nomimotita! (because it is 'broken' in the checkCheck function)
                             Nomimotita = 1
                             IF whiteCheck = 1 THEN Nomimotita = 0
-                            whoPlays$ = "Human"
+                            'whoPlays$ = "Human"
                         END IF
 
                         'Undo the move
@@ -1965,17 +1967,9 @@ SUB HumanMove1 (HM1Skakiera() AS STRING)
         'Detect stalemate (Pat in Greek) if there is no human move found, but there is check! (14/3/2021)
         IF playerColor$ = "w" AND whiteCheck = 0 THEN
             PatFound = 1
-            bestStartingRankMate = startingRank
-            bestStartingColumnMate = startingColumn
-            bestFinishingRankMate = finishingRank
-            bestFinishingColumnMate = finishingColumn
         END IF
         IF playerColor$ = "b" AND blackCheck = 0 THEN
             PatFound = 1
-            bestStartingRankMate = startingRank
-            bestStartingColumnMate = startingColumn
-            bestFinishingRankMate = finishingRank
-            bestFinishingColumnMate = finishingColumn
         END IF
 
     END IF
@@ -2054,7 +2048,7 @@ SUB ComputerMove2 (CM2Skakiera() AS STRING)
                             ' Store parents
                             NodesAnalysis2(NodeLevel_2_count, 2) = NodeLevel_1_count
                             'Store the move
-                            'NodesMoves1$(NodeLevel_2_count) = NodesMoves1$(NodeLevel_1_count) + " , " + STR$(startingColumnCM2) + STR$(startingRankCM2) + " -> " + STR$(finishingColumnCM2) + STR$(finishingRankCM2)
+                            'NodesMoves2$(NodeLevel_2_count) = NodesMoves1$(NodeLevel_1_count) + " , " + STR$(startingColumnCM2) + STR$(startingRankCM2) + " -> " + STR$(finishingColumnCM2) + STR$(finishingRankCM2)
 
                             IF debugMode = 1 THEN
                                 IF NodeLevel_2_count < 0 THEN PRINT "Now 4": INPUT CheckpointA$
@@ -2152,70 +2146,67 @@ SUB MinMax ()
 
     ' ------- LOG: Nodes before (start) -------
 
-    WRITE #1, "-------- NODES LEVEL 0 --------": WRITE #1, ""
+    'WRITE #1, "-------- NODES LEVEL 0 --------": WRITE #1, ""
 
-    FOR counter0 = 1 TO (NodeLevel_0_count - 1)
-        WRITE #1, "NodesAnalysis0(counter0, 1) = ", NodesAnalysis0(counter0, 1)
-        WRITE #1, "NodesAnalysis2(counter0, 2) = ", NodesAnalysis0(counter0, 2)
-        'WRITE #1, "startingColumn  : ", NodesAnalysis0(counter0, 3)
-        'WRITE #1, "startingRank    : ", NodesAnalysis0(counter0, 5)
-        'WRITE #1, "finishingColumn : ", NodesAnalysis0(counter0, 4)
-        'WRITE #1, "finishingRank   : ", NodesAnalysis0(counter0, 6)
-        'WRITE #1, NodesMoves0$(counter0)
-        WRITE #1, ""
-    NEXT counter0
+    'FOR counter0 = 1 TO (NodeLevel_0_count - 1)
+    '    WRITE #1, "Node 0: ", counter0
+    '    WRITE #1, "NodesAnalysis0(counter0, 1) = ", NodesAnalysis0(counter0, 1)
+    '    WRITE #1, "NodesAnalysis2(counter0, 2) = ", NodesAnalysis0(counter0, 2)
+    '    WRITE #1, "startingColumn  : ", NodesAnalysis0(counter0, 3)
+    '    WRITE #1, "startingRank    : ", NodesAnalysis0(counter0, 5)
+    '    WRITE #1, "finishingColumn : ", NodesAnalysis0(counter0, 4)
+    '    WRITE #1, "finishingRank   : ", NodesAnalysis0(counter0, 6)
+    '    WRITE #1, "Move: ", NodesMoves0$(counter0)
+    '    WRITE #1, ""
+    'NEXT counter0
 
-    WRITE #1, "-------- NODES LEVEL 1 --------": WRITE #1, ""
+    'WRITE #1, "-------- NODES LEVEL 1 --------": WRITE #1, ""
 
-    FOR counter1 = 1 TO (NodeLevel_1_count - 1)
-        WRITE #1, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
-        WRITE #1, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
-        'WRITE #1, NodesMoves1$(counter1)
-        WRITE #1, ""
-    NEXT counter1
+    'FOR counter1 = 1 TO (NodeLevel_1_count - 1)
+    '    WRITE #1, "Node 1: ", counter1
+    '    WRITE #1, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
+    '    WRITE #1, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
+    '    WRITE #1, "Move: ", NodesMoves1$(counter1)
+    '    WRITE #1, ""
+    'NEXT counter1
 
-    WRITE #1, "-------- NODES LEVEL 2 --------": WRITE #1, ""
+    'WRITE #1, "-------- NODES LEVEL 2 --------": WRITE #1, ""
 
-    'PRINT "NodeLevel_2_count = " + STR$(NodeLevel_2_count)
-    'PRINT "NodesAnalysis2(counter2, 1) = " + STR$(NodesAnalysis2(counter2, 1))
-    'PRINT "NodesAnalysis2(counter2, 2) = " + STR$(NodesAnalysis2(counter2, 2))
-    'INPUT A$
+    'FOR counter2 = 1 TO (NodeLevel_2_count - 1)
+        'WRITE #1, "Node 2: ", counter2
+        'WRITE #1, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
+        'WRITE #1, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
+        'WRITE #1, "Move: ", NodesMoves2$(counter2)
+        'WRITE #1, ""
+    'NEXT counter2
 
-    FOR counter2 = 1 TO (NodeLevel_2_count - 1)
-        'PRINT "NodeLevel_2_count = " + STR$(NodeLevel_2_count)
-        'PRINT "counter2 = " + STR$(counter2)
-        'PRINT "NodesAnalysis2(counter2, 1) = " + STR$(NodesAnalysis2(counter2, 1))
-        'PRINT "NodesAnalysis2(counter2, 2) = " + STR$(NodesAnalysis2(counter2, 2))
+    'WRITE #1, "-------- NODES LEVEL 3 --------": WRITE #1, ""
 
-        WRITE #1, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
-        WRITE #1, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
-        'WRITE #1, NodesMoves2$(counter2)
-        WRITE #1, ""
-    NEXT counter2
+    'FOR counter3 = 1 TO (NodeLevel_3_count - 1)
+    '    WRITE #1, "Node 3: ", counter3
+    '    WRITE #1, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
+    '    WRITE #1, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
+    '    WRITE #1, "Move: ", NodesMoves3$(counter3)
+    '    WRITE #1, ""
+    'NEXT counter3
 
-    WRITE #1, "-------- NODES LEVEL 3 --------": WRITE #1, ""
+    'WRITE #1, "-------- NODES LEVEL 4 --------": WRITE #1, ""
 
-    FOR counter3 = 1 TO (NodeLevel_3_count - 1)
-        WRITE #1, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
-        WRITE #1, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
-        'WRITE #1, NodesMoves3$(counter3)
-        WRITE #1, ""
-    NEXT counter3
-
-    WRITE #1, "-------- NODES LEVEL 4 --------": WRITE #1, ""
-
-    FOR counter4 = 1 TO (NodeLevel_4_count - 1)
-        WRITE #1, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
-        WRITE #1, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
-        'WRITE #1, NodesMoves4$(counter4)
-        WRITE #1, ""
-    NEXT counter4
+    'FOR counter4 = 1 TO (NodeLevel_4_count - 1)
+    '    WRITE #1, "Node 4: ", counter4
+    '    WRITE #1, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
+    '    WRITE #1, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
+    '    WRITE #1, "Move: ", NodesMoves4$(counter4)
+    '    WRITE #1, ""
+    'NEXT counter4
 
     ' ------- LOG: Nodes before (end) -------
 
+    parentNodeAnalyzed = -999
+
     IF thinkingDepth = 5 THEN
 
-        parentNodeAnalyzed = -999
+        'parentNodeAnalyzed = -999
 
         ' Move 4 level (Computer) -- The analysis starts from here if Thinking_Depth = 4.
 
@@ -2265,7 +2256,7 @@ SUB MinMax ()
 
         ' Move 3 level (Human)
 
-        parentNodeAnalyzed = -999
+        'parentNodeAnalyzed = -999
 
         ' Note: Start from 1!
         FOR counter3 = 1 TO (NodeLevel_3_count - 1)
@@ -2299,7 +2290,7 @@ SUB MinMax ()
 
     END IF
 
-    parentNodeAnalyzed = -999
+    'parentNodeAnalyzed = -999
 
     ' Move 2 level (Computer) -- The analysis starts from here if Thinking_Depth = 2.
 
@@ -2350,7 +2341,7 @@ SUB MinMax ()
 
     ' Move 1 level (Human)
 
-    parentNodeAnalyzed = -999
+    'parentNodeAnalyzed = -999
 
     ' Note: Start from 1!
     FOR counter1 = 1 TO (NodeLevel_1_count - 1)
@@ -2430,54 +2421,55 @@ SUB MinMax ()
 
     ' ------- LOG: Nodes after (start) -------
 
-    WRITE #2, "-------- NODES LEVEL 0 --------": WRITE #2, ""
-
-    FOR counter0 = 1 TO (NodeLevel_0_count - 1)
-        WRITE #2, "NodesAnalysis0(counter0, 1) = ", NodesAnalysis0(counter0, 1)
-        WRITE #2, "NodesAnalysis2(counter0, 2) = ", NodesAnalysis0(counter0, 2)
-        'WRITE #2, "startingColumn  : ", NodesAnalysis0(counter0, 3)
-        'WRITE #2, "startingRank    : ", NodesAnalysis0(counter0, 5)
-        'WRITE #2, "finishingColumn : ", NodesAnalysis0(counter0, 4)
-        'WRITE #2, "finishingRank   : ", NodesAnalysis0(counter0, 6)
-        'WRITE #2, NodesMoves0$(counter0)
-        WRITE #2, ""
-    NEXT counter0
-
-    WRITE #2, "-------- NODES LEVEL 1 --------": WRITE #1, ""
-
-    FOR counter1 = 1 TO (NodeLevel_1_count - 1)
-        WRITE #2, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
-        WRITE #2, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
-        'WRITE #2, NodesMoves1$(counter1)
-        WRITE #2, ""
-    NEXT counter1
-
-    WRITE #2, "-------- NODES LEVEL 2 --------": WRITE #1, ""
-
-    FOR counter2 = 1 TO (NodeLevel_2_count - 1)
-        WRITE #2, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
-        WRITE #2, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
-        'WRITE #2, NodesMoves2$(counter2)
-        WRITE #2, ""
-    NEXT counter2
-
-    WRITE #1, "-------- NODES LEVEL 3 --------": WRITE #1, ""
-
-    FOR counter3 = 1 TO (NodeLevel_3_count - 1)
-        WRITE #1, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
-        WRITE #1, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
-        'WRITE #1, NodesMoves3$(counter3)
-        WRITE #1, ""
-    NEXT counter3
-
-    WRITE #1, "-------- NODES LEVEL 4 --------": WRITE #1, ""
-
-    FOR counter4 = 1 TO (NodeLevel_4_count - 1)
-        WRITE #1, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
-        WRITE #1, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
-        'WRITE #1, NodesMoves4$(counter4)
-        WRITE #1, ""
-    NEXT counter4
+    'WRITE #2, "-------- NODES LEVEL 0 --------": WRITE #2, ""
+	'
+    'FOR counter0 = 1 TO (NodeLevel_0_count - 1)
+    '    WRITE #2, "Node 0: ", counter0
+    '    WRITE #2, "NodesAnalysis0(counter0, 1) = ", NodesAnalysis0(counter0, 1)
+    '    WRITE #2, "NodesAnalysis2(counter0, 2) = ", NodesAnalysis0(counter0, 2)
+    '    WRITE #2, "Move: ", NodesMoves0$(counter0)
+    '    WRITE #2, ""
+    'NEXT counter0
+	'
+    'WRITE #2, "-------- NODES LEVEL 1 --------": WRITE #1, ""
+	'
+    'FOR counter1 = 1 TO (NodeLevel_1_count - 1)
+    '    WRITE #2, "Node 1: ", counter1
+    '    WRITE #2, "NodesAnalysis1(counter1, 1) = ", NodesAnalysis1(counter1, 1)
+    '    WRITE #2, "NodesAnalysis1(counter1, 2) = ", NodesAnalysis1(counter1, 2)
+    '    WRITE #2, "Move: ", NodesMoves1$(counter1)
+    '    WRITE #2, ""
+    'NEXT counter1
+	'
+    'WRITE #2, "-------- NODES LEVEL 2 --------": WRITE #1, ""
+	'
+    'FOR counter2 = 1 TO (NodeLevel_2_count - 1)
+    '    WRITE #2, "Node 2: ", counter2
+    '    WRITE #2, "NodesAnalysis2(counter2, 1) = ", NodesAnalysis2(counter2, 1)
+    '    WRITE #2, "NodesAnalysis2(counter2, 2) = ", NodesAnalysis2(counter2, 2)
+    '    WRITE #2, "Move: ", NodesMoves2$(counter2)
+    '    WRITE #2, ""
+    'NEXT counter2
+	'
+    'WRITE #2, "-------- NODES LEVEL 3 --------": WRITE #1, ""
+	'
+    'FOR counter3 = 1 TO (NodeLevel_3_count - 1)
+    '    WRITE #2, "Node 3: ", counter3
+    '    WRITE #2, "NodesAnalysis3(counter3, 1) = ", NodesAnalysis3(counter3, 1)
+    '    WRITE #2, "NodesAnalysis3(counter3, 2) = ", NodesAnalysis3(counter3, 2)
+    '    WRITE #2, "Move: ", NodesMoves3$(counter3)
+    '    WRITE #2, ""
+    'NEXT counter3
+	'
+    'WRITE #2, "-------- NODES LEVEL 4 --------": WRITE #1, ""
+	'
+    'FOR counter4 = 1 TO (NodeLevel_4_count - 1)
+    '    WRITE #2, "Node 4: ", counter4
+    '    WRITE #2, "NodesAnalysis4(counter4, 1) = ", NodesAnalysis4(counter4, 1)
+    '    WRITE #2, "NodesAnalysis4(counter4, 2) = ", NodesAnalysis4(counter4, 2)
+    '    WRITE #2, "Move: ", NodesMoves4$(counter4)
+    '    WRITE #2, ""
+    'NEXT counter4
 
     ' ------- LOG: Nodes after (end) -------
 
@@ -2539,6 +2531,9 @@ SUB HumanMove3 (HM3Skakiera() AS STRING)
                             NodesAnalysis3(NodeLevel_3_count, 1) = positionScore
                             ' Store parents
                             NodesAnalysis3(NodeLevel_3_count, 2) = NodeLevel_2_count
+                            'Store the move
+                            'NodesMoves3$(NodeLevel_3_count) = NodesMoves2$(NodeLevel_2_count) + " , " + STR$(startingColumnHM3) + STR$(startingRankHM3) + " -> " + STR$(finishingColumnHM3) + STR$(finishingRankHM3)
+
 
                             'Call the next level only if the variant entails capturing a piece (14/3/2021)
                             IF Move < thinkingDepth AND ProsorinoKommatiHM3$ <> "" THEN
@@ -2618,6 +2613,9 @@ SUB ComputerMove4 (CM4Skakiera() AS STRING)
                             NodesAnalysis4(NodeLevel_4_count, 1) = positionScore
                             ' Store parents
                             NodesAnalysis4(NodeLevel_4_count, 2) = NodeLevel_3_count
+                            'Store the move
+                            'NodesMoves4$(NodeLevel_4_count) = NodesMoves3$(NodeLevel_3_count) + " , " + STR$(startingColumnCM4) + STR$(startingRankCM4) + " -> " + STR$(finishingColumnCM4) + STR$(finishingRankCM4)
+                            
 
                             'If the score is better than the existing best score, then this is the best move now (and the best score)
                             'This is not needed. MiniMax determines the best move anyway.
